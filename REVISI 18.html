@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <!-- viewport dikonfigurasi untuk mengunci zoom di perangkat mobile -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no" />
+  <title>Media Pembelajaran Renang Gaya Dada</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    * { 
+      margin: 0; 
+      padding: 0; 
+      box-sizing: border-box; 
+      /* Menghindari highlight biru bawaan browser saat elemen disentuh di mobile */
+      -webkit-tap-highlight-color: transparent; 
+    }
+    
+    :root {
+      /* Base Club Web3 Palette */
+      --bg-blue: #0A36F5; 
+      --bg-dark-blue: #051A80;
+      --lime-neon: #d0e3ff;
+      --lime-neon-hover: #d0e3ff;
+      --lime-neon-dim: rgba(204, 255, 0, 0.15);
+      --white-pure: #ffffff;
+      --text-muted: #E2E8F0;
+      --text-dark: #0A192F;
+      
+      /* Glassmorphism Tokens */
+      --glass-bg: rgba(255, 255, 255, 0.12);
+      --glass-bg-hover: rgba(255, 255, 255, 0.20);
+      --glass-border: rgba(255, 255, 255, 0.25);
+      --glass-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+      
+      /* Pure White Surface for Cards at the bottom */
+      --surface-light: #F8FAFC;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      color: var(--white-pure);
+      min-height: 100vh;
+      background-color: var(--bg-blue);
+      /* Blueprint Grid Pattern */
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      overflow-x: hidden;
+      position: relative;
+      /* Mencegah default gesture zoom pada seluruh halaman */
+      touch-action: pan-x pan-y;
+    }
+
+    /* Ambient Glow Blobs */
+    body::before {
+      content: "";
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, var(--lime-neon) 0%, transparent 70%);
+      top: -100px;
+      left: -100px;
+      opacity: 0.15;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Main App Layout */
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: 90px 1fr 90px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Premium Header */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      border-bottom: 1px solid var(--glass-border);
+      background: rgba(10, 54, 245, 0.4);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .logo {
+      width: 54px;
+      height: 54px;
+      border-radius: 16px;
+      background: var(--white-pure);
+      border: 2px solid var(--lime-neon);
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(204, 255, 0, 0.4);
+    }
+
+    .logo img {
+      width: 80%;
+      height: 80%;
+      object-fit: contain;
+    }
+
+    .brand-text small {
+      display: block;
+      color: var(--lime-neon);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: 800;
+    }
+
+    .brand-text h1 {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--white-pure);
+      letter-spacing: -0.5px;
+    }
+
+    /* Floating Navigation Pill in Header */
+    .header-nav {
+      display: flex;
+      gap: 10px;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 6px;
+      border-radius: 999px;
+      border: 1px solid var(--glass-border);
+    }
+
+    .nav-pill {
+      padding: 8px 16px;
+      border-radius: 999px;
+      color: var(--white-pure);
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      cursor: pointer;
+      /* Mencegah double tap zoom pada tombol menu navigasi */
+      touch-action: manipulation;
+    }
+
+    .nav-pill:hover, .nav-pill.active {
+      background: var(--lime-neon);
+      color: var(--text-dark);
+    }
+
+    /* Content Area */
+    .stage {
+      position: relative;
+    }
+
+    .page {
+      position: absolute;
+      inset: 0;
+      overflow-y: auto;
+      padding: 40px;
+      opacity: 0;
+      transform: translateY(20px);
+      pointer-events: none;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .page.active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    /* Title Styling - Bold Base Style */
+    .page-header {
+      margin-bottom: 40px;
+      position: relative;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 999px;
+      background: var(--lime-neon-dim);
+      border: 1px solid var(--lime-neon);
+      color: var(--lime-neon);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 16px;
+    }
+
+    .hero-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -3px;
+      text-transform: uppercase;
+      color: var(--white-pure);
+      margin-bottom: 24px;
+    }
+
+    .hero-title span {
+      display: block;
+      color: var(--lime-neon);
+      position: relative;
+    }
+
+    /* Layout Cards & Glass Containers */
+    .glass-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border-radius: 28px;
+      padding: 36px;
+      box-shadow: var(--glass-shadow);
+    }
+
+    /* Page 1: Hero Page Specific Styling */
+    .hero-layout {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 40px;
+      align-items: center;
+      min-height: calc(100vh - 260px);
+    }
+
+    .hero-visual {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Floating Web3-style Avatar Cards from the Reference Image */
+    .floating-badge {
+      background: rgba(255, 255, 255, 0.15);
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      border-radius: 24px;
+      padding: 24px;
+      width: 220px;
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+      position: absolute;
+      transition: transform 0.3s ease;
+    }
+
+    .floating-badge:hover {
+      transform: translateY(-10px) rotate(2deg);
+    }
+
+    .badge-1 {
+      top: -120px;
+      left: 10px;
+      transform: rotate(-8deg);
+    }
+
+    .badge-2 {
+      bottom: -150px;
+      right: 20px;
+      transform: rotate(6deg);
+    }
+
+    .badge-avatar {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: var(--lime-neon);
+      margin: 0 auto 16px;
+      display: grid;
+      place-items: center;
+      font-size: 32px;
+      font-weight: bold;
+      color: var(--text-dark);
+      border: 3px solid var(--white-pure);
+    }
+
+    .badge-name {
+      text-align: center;
+      font-weight: 800;
+      font-size: 16px;
+      color: var(--white-pure);
+    }
+
+    .badge-points {
+      text-align: center;
+      font-size: 12px;
+      color: var(--lime-neon);
+      margin-top: 4px;
+      font-weight: 700;
+    }
+
+    /* Handdrawn Arrow Scribble simulation */
+    .scribble-arrow {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      pointer-events: none;
+    }
+
+    /* Button Styles */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 32px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      border: none;
+      text-decoration: none;
+      /* Mencegah zoom saat double-tap tombol di mobile */
+      touch-action: manipulation;
+    }
+
+    .btn-primary {
+      background: var(--lime-neon);
+      color: var(--text-dark);
+      box-shadow: 0 10px 30px rgba(204, 255, 0, 0.3);
+    }
+
+    .btn-primary:hover {
+      background: var(--white-pure);
+      transform: scale(1.05) translateY(-2px);
+      box-shadow: 0 15px 40px rgba(255, 255, 255, 0.4);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--white-pure);
+      border: 2px solid var(--glass-border);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--white-pure);
+      transform: translateY(-2px);
+    }
+
+    /* Page 2: Menu Grid Layout with bottom White Highlight block */
+    .menu-layout {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+      margin-top: 20px;
+    }
+
+    .menu-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 30px;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      /* Mencegah double tap zoom pada kartu navigasi menu */
+      touch-action: manipulation;
+    }
+
+    .menu-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 6px;
+      background: transparent;
+      transition: background 0.3s;
+    }
+
+    .menu-card:hover {
+      background: var(--glass-bg-hover);
+      transform: translateY(-8px);
+      border-color: var(--lime-neon);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .menu-card:hover::before {
+      background: var(--lime-neon);
+    }
+
+    .menu-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--lime-neon);
+      color: var(--text-dark);
+      font-weight: 800;
+      font-size: 18px;
+      margin-bottom: 24px;
+    }
+
+    .menu-card h3 {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+
+    .menu-card p {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* Page 3: Two-Column split video and steps list */
+    .split-layout {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    .viewer-panel {
+      position: sticky;
+      top: 20px;
+    }
+
+    .video-viewport {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/10;
+      background: #000;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 2px solid var(--glass-border);
+      margin-bottom: 24px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+    }
+
+    .video-viewport video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .badge-neon-tag {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      background: var(--lime-neon);
+      color: var(--text-dark);
+      font-size: 11px;
+      font-weight: 800;
+      padding: 6px 14px;
+      border-radius: 999px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      z-index: 2;
+      box-shadow: 0 5px 15px rgba(204, 255, 0, 0.4);
+    }
+
+    /* Video controls container */
+    .video-controls {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    /* Step Rows (Interactive Sidebar) */
+    .steps-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .interactive-step {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 16px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 18px;
+      padding: 16px;
+      cursor: pointer;
+      align-items: center;
+      transition: all 0.2s;
+      /* Mencegah double tap zoom pada list langkah */
+      touch-action: manipulation;
+    }
+
+    .interactive-step:hover {
+      background: rgba(255, 255, 255, 0.18);
+      border-color: var(--lime-neon);
+      transform: translateX(5px);
+    }
+
+    .interactive-step.active {
+      background: var(--white-pure);
+      border-color: var(--lime-neon);
+    }
+
+    .interactive-step.active h4, .interactive-step.active p {
+      color: var(--text-dark);
+    }
+
+    .step-thumb {
+      width: 80px;
+      height: 80px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #000;
+      border: 1px solid var(--glass-border);
+    }
+
+    .step-thumb video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .step-info h4 {
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .step-info p {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* Popups and Tooltips simulating "Base Club" glassmorphism cards */
+    .motion-popup {
+      position: absolute;
+      top: 16px; 
+      left: 16px;
+      right: 16px;
+      background: rgba(10, 25, 47, 0.9);
+      border: 2px solid var(--lime-neon);
+      border-radius: 16px;
+      padding: 16px;
+      color: var(--white-pure);
+      opacity: 0;
+      transform: translateY(-10px); 
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .motion-popup.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .motion-popup h4 {
+      color: var(--lime-neon);
+      font-size: 14px;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .motion-popup p {
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    /* Page 4: Grid of 4 coordination cards */
+    .coordination-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+    }
+
+    .coord-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+
+    .coord-card:hover {
+      border-color: var(--lime-neon);
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .coord-media {
+      width: 100%;
+      aspect-ratio: 16/10;
+      background: #000;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .coord-media video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .coord-content {
+      padding: 24px;
+    }
+
+    .coord-number {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--lime-neon);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .coord-content h3 {
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .coord-content p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Page 5: Evaluasi styling with premium white/lime stats panel */
+    .eval-container {
+      display: grid;
+      grid-template-columns: 0.7fr 1.3fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    .stats-panel {
+      background: var(--white-pure);
+      color: var(--text-dark);
+      border-radius: 24px;
+      padding: 32px;
+      position: sticky;
+      top: 20px;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.25);
+    }
+
+    .stats-panel h3 {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 20px;
+    }
+
+    .progress-bar {
+      height: 14px;
+      background: #E2E8F0;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--bg-blue);
+      border-radius: 999px;
+      transition: width 0.4s ease;
+    }
+
+    .stats-percentage {
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--bg-blue);
+    }
+
+    .eval-questions-list {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .eval-question-item {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 24px;
+    }
+
+    .eval-question-item h4 {
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+
+    textarea.essay {
+      width: 100%;
+      min-height: 120px;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 16px;
+      color: var(--white-pure);
+      font-family: inherit;
+      font-size: 14px;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    textarea.essay:focus {
+      border-color: var(--lime-neon);
+    }
+
+    /* Page 6: Quiz cards styling */
+    .quiz-layout {
+      display: grid;
+      gap: 24px;
+    }
+
+    .quiz-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 32px;
+    }
+
+    .quiz-card h3 {
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .quiz-option {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px;
+      padding: 16px 20px;
+      color: var(--white-pure);
+      font-size: 14px;
+      font-weight: 600;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s;
+      /* Mencegah double tap zoom pada opsi kuis */
+      touch-action: manipulation;
+    }
+
+    .quiz-option:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: var(--lime-neon);
+      transform: translateX(4px);
+    }
+
+    .quiz-option.correct {
+      background: rgba(52, 199, 89, 0.2) !important;
+      border-color: #34c759 !important;
+      color: #34c759;
+    }
+
+    .quiz-option.wrong {
+      background: rgba(255, 59, 48, 0.2) !important;
+      border-color: #ff3b30 !important;
+      color: #ff3b30;
+    }
+
+    .quiz-action-bar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 32px;
+      flex-wrap: wrap;
+    }
+
+    .chip-score {
+      background: var(--lime-neon-dim);
+      border: 1.5px solid var(--lime-neon);
+      color: var(--lime-neon);
+      font-weight: 800;
+      padding: 12px 24px;
+      border-radius: 999px;
+      font-size: 14px;
+    }
+
+    /* Bottom Control Bar */
+    .bottombar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      border-top: 1px solid var(--glass-border);
+      background: rgba(10, 54, 245, 0.6);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    .dots-nav {
+      display: flex;
+      gap: 10px;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      cursor: pointer;
+      transition: all 0.25s;
+      /* Mencegah zoom saat menavigasi titik dots */
+      touch-action: manipulation;
+    }
+
+    .dot.active {
+      width: 36px;
+      border-radius: 999px;
+      background: var(--lime-neon);
+      box-shadow: 0 0 15px rgba(204, 255, 0, 0.5);
+    }
+
+    .footer-buttons {
+      display: flex;
+      gap: 12px;
+    }
+
+    /* Handdrawn Scribble SVG background highlights */
+    .highlight-marker {
+      position: relative;
+    }
+
+    .highlight-marker::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      width: 100%;
+      height: 8px;
+      background-image: url("data:image/svg+xml,%3Csvg width='100' height='10' viewBox='0 0 100 10' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 7C23.5 3.5 66.5 1 97 4.5' stroke='%23CCFF00' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-size: 100% 100%;
+      z-index: -1;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 900px) {
+      .app {
+        grid-template-rows: auto 1fr auto;
+      }
+      
+      .topbar {
+        flex-direction: column;
+        padding: 20px;
+        gap: 16px;
+      }
+
+      .bottombar {
+        flex-direction: column;
+        padding: 20px;
+        gap: 16px;
+      }
+
+      .page {
+        position: relative;
+        display: none;
+        padding: 24px 16px;
+      }
+
+      .page.active {
+        display: block;
+      }
+
+      .hero-layout {
+        grid-template-columns: 1fr;
+        text-align: center;
+        min-height: auto;
+      }
+
+      .hero-visual {
+        min-height: 250px;
+        margin-top: 40px;
+      }
+
+      .floating-badge {
+        width: 160px;
+      }
+
+      .badge-1 {
+        left: 0;
+        top: -40px;
+      }
+
+      .badge-2 {
+        right: 0;
+        bottom: -20px;
+      }
+
+      .split-layout, .eval-container {
+        grid-template-columns: 1fr;
+      }
+
+      .viewer-panel, .stats-panel {
+        position: relative;
+        top: 0;
+        margin-bottom: 24px;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <main class="app">
+    <!-- Header / Topbar -->
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">
+          <img src="Universitas Negeri Malang.png" alt="Logo UM" onerror="this.style.display='none'; this.parentElement.textContent='UM';">
+        </div>
+        <div class="brand-text">
+          <small>Media Pembelajaran Interaktif</small>
+          <h1>PJOK: Renang Gaya Dada</h1>
+        </div>
+      </div>
+      
+      <!-- Mini Floating Nav Menu -->
+      <nav class="header-nav">
+        <div class="nav-pill active" onclick="goPage(1)">Mulai</div>
+        <div class="nav-pill" onclick="goPage(2)">Menu</div>
+        <div class="nav-pill" onclick="goPage(3)">Materi</div>
+        <div class="nav-pill" onclick="goPage(4)">Koordinasi</div>
+        <div class="nav-pill" onclick="goPage(5)">Evaluasi</div>
+        <div class="nav-pill" onclick="goPage(6)">Quiz</div>
+      </nav>
+    </header>
+
+    <!-- App Stage (All Pages inside) -->
+    <section class="stage">
+      
+      <!-- PAGE 1: HERO / OPENING -->
+      <article class="page active" data-page="1">
+        <div class="container hero-layout">
+          <div>
+            <h2 class="hero-title">
+              Renang 
+              <span>Gaya Dada</span>
+            </h2>
+            <p style="font-size: 16px; color: var(--text-muted); line-height: 1.8; margin-bottom: 32px; max-width: 580px;">
+              Selamat datang di Media Pembelajaran Interaktif Pendidikan Jasmani, Kesehatan, dan Rekreasi Universitas Negeri Malang. Platform inovatif untuk menguasai teknik dasar mulai dari gerakan kaki, gerakan tangan, hingga pernapasan secara optimal.
+            </p>
+            <div style="display: flex; gap: 16px;">
+              <button class="btn btn-primary" onclick="goPage(2)">Mulai Belajar &rarr;</button>
+            </div>
+          </div>
+          
+          <!-- Base Club Floating Elements style -->
+          <div class="hero-visual">
+            <svg class="scribble-arrow" style="top:-60px; right: 20px;" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 20C40 15 70 40 85 70M85 70L65 65M85 70L80 50" stroke="#CCFF00" stroke-width="5" stroke-linecap="round"/>
+            </svg>
+            <div class="floating-badge badge-1">
+              <div class="badge-avatar">🏊‍♂️</div>
+              <div class="badge-name">Pendidikan</div>
+              <div class="badge-points">Jasmani</div>
+            </div>
+            <div class="floating-badge badge-2">
+              <div class="badge-avatar">🎯</div>
+              <div class="badge-name">Teknik Dasar</div>
+              <div class="badge-points">Gaya Dada</div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- PAGE 2: MENU PEMBELAJARAN -->
+      <article class="page" data-page="2">
+        <div class="container">
+          <div class="page-header">
+            <span class="eyebrow">Daftar Materi</span>
+            <h2 class="hero-title">Menu Utama <span>Pembelajaran</span></h2>
+            <p style="color: var(--text-muted); max-width: 600px;">Pilih salah satu menu pembelajaran di bawah ini untuk memulai belajar secara terarah.</p>
+          </div>
+
+          <div class="menu-layout">
+            <div class="menu-card" onclick="goPage(3)">
+              <div class="menu-badge">1</div>
+              <h3>Teknik Dasar</h3>
+              <p>Analisis video langkah-demi-langkah (stop motion) per gerakan disertai dengan penjelasan teoretis yang komprehensif.</p>
+            </div>
+            
+            <div class="menu-card" onclick="goPage(4)">
+              <div class="menu-badge">2</div>
+              <h3>Koordinasi Gerakan</h3>
+              <p>Pelajari penyelarasan gerakan menyeluruh untuk meluncur secara streamline dengan video koordinasi penuh.</p>
+            </div>
+
+            <div class="menu-card" onclick="goPage(5)">
+              <div class="menu-badge">3</div>
+              <h3>Evaluasi Mandiri</h3>
+              <p>Uji pemahaman mendalam Anda lewat pengerjaan esai analisis dan program rancangan latihan mandiri.</p>
+            </div>
+
+            <div class="menu-card" onclick="goPage(6)">
+              <div class="menu-badge">4</div>
+              <h3>Kuis Interaktif</h3>
+              <p>Kuis interaktif pilihan ganda untuk mengukur capaian kognitif pembelajaran Anda secara langsung.</p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- PAGE 3: TEKNIK DASAR (SPLIT VIDEO & INTERACTIVE STEPS) -->
+      <article class="page" data-page="3">
+        <div class="container">
+          <div class="page-header" style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 20px;">
+            <div>
+              <span class="eyebrow">Materi Utama</span>
+              <h2 class="hero-title" style="font-size: clamp(2rem, 4vw, 3.5rem);">Penjelasan <span>per Gerakan</span></h2>
+              <p style="color: var(--text-muted);">Pilih jenis gerakan di bilah kanan untuk memutar video stop-motion dan membaca keterangannya.</p>
+            </div>
+            <button class="btn btn-secondary" onclick="goPage(2)">&larr; Kembali ke Menu</button>
+          </div>
+
+          <div class="split-layout">
+            <!-- Left Side: Interactive Video Player -->
+            <div class="viewer-panel glass-card">
+              <div class="video-viewport">
+                <span class="badge-neon-tag">Stop Motion</span>
+                <video id="stopMain" playsinline preload="metadata" muted>
+                  <source src="kaki1.mp4" type="video/mp4">
+                </video>
+                <!-- Popup Card Style as reference image -->
+                <div class="motion-popup" id="motionPopup">
+                  <h4 id="popupTitle">Awalan Gerakan Kaki</h4>
+                  <p id="popupText">Tumit ditarik mendekati pinggul dan telapak kaki diputar keluar sebagai persiapan tendangan.</p>
+                </div>
+              </div>
+
+              <div class="video-controls">
+                <button class="btn btn-primary" style="flex: 1;" onclick="toggleStop()">▶ Putar / Jeda</button>
+                <button class="btn btn-secondary" onclick="resetStop()">↺ Ulang</button>
+              </div>
+
+              <h3 id="stopTitle" style="font-size: 24px; font-weight: 800; margin-bottom: 12px;">Gerakan Kaki Tahap 1</h3>
+              <p id="stopDesc" style="color: var(--text-muted); line-height: 1.6; font-size: 14px;">Kaki ditekuk, tumit ditarik mendekati pinggul, lalu telapak kaki diputar keluar sebagai awalan tendangan.</p>
+            </div>
+
+            <!-- Right Side: Interactive Step Selector -->
+            <div class="steps-list">
+              <div class="interactive-step" id="stepBtn1" onclick="selectStepAndPlay(1, 'kaki1.mp4','Gerakan Kaki Tahap 1','Kaki ditekuk, tumit ditarik mendekati pinggul, lalu telapak kaki diputar keluar sebagai awalan tendangan.')">
+                <div class="step-thumb">
+                  <video muted preload="metadata"><source src="kaki1.mp4" type="video/mp4"></video>
+                </div>
+                <div class="step-info">
+                  <h4>Gerakan Kaki Tahap 1</h4>
+                  <p>Kaki ditekuk dan disiapkan untuk mendorong air.</p>
+                  <span style="font-size: 11px; color: var(--lime-neon); font-weight: 700; display: block; margin-top: 4px;">Tahap awal mempersiapkan dorongan kaki.</span>
+                </div>
+              </div>
+
+              <div class="interactive-step" id="stepBtn2" onclick="selectStepAndPlay(2, 'abim2.mp4','Gerakan Kaki Tahap 2','Kaki menendang ke samping belakang, kemudian dirapatkan agar tubuh terdorong maju.')">
+                <div class="step-thumb">
+                  <video muted preload="metadata"><source src="abim2.mp4" type="video/mp4"></video>
+                </div>
+                <div class="step-info">
+                  <h4>Gerakan Kaki Tahap 2</h4>
+                  <p>Tendangan kaki dilakukan simetris seperti gaya katak.</p>
+                  <span style="font-size: 11px; color: var(--lime-neon); font-weight: 700; display: block; margin-top: 4px;">Dorongan utama ke arah depan.</span>
+                </div>
+              </div>
+
+              <div class="interactive-step" id="stepBtn3" onclick="selectStepAndPlay(3, 'gerakan-tangan-abim.mp4','Gerakan Tangan','Tangan membuka ke samping, menarik air ke arah dada, lalu kembali lurus ke depan.')">
+                <div class="step-thumb">
+                  <video muted preload="metadata"><source src="gerakan-tangan-abim.mp4" type="video/mp4"></video>
+                </div>
+                <div class="step-info">
+                  <h4>Gerakan Tangan</h4>
+                  <p>Tarik, sapu, rapatkan, lalu luruskan kembali.</p>
+                  <span style="font-size: 11px; color: var(--lime-neon); font-weight: 700; display: block; margin-top: 4px;">Membantu arah gerak dan keseimbangan.</span>
+                </div>
+              </div>
+
+              <div class="interactive-step" id="stepBtn4" onclick="selectStepAndPlay(4, 'abim3.mp4','Pernapasan','Kepala naik saat tangan menarik air, mengambil napas, lalu masuk kembali saat tangan diluruskan.')">
+                <div class="step-thumb">
+                  <video muted preload="metadata"><source src="abim3.mp4" type="video/mp4"></video>
+                </div>
+                <div class="step-info">
+                  <h4>Pernapasan</h4>
+                  <p>Ambil napas saat kepala naik, buang napas di air.</p>
+                  <span style="font-size: 11px; color: var(--lime-neon); font-weight: 700; display: block; margin-top: 4px;">Sinkronisasi pernapasan dengan gerak tangan.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- PAGE 4: KOORDINASI GERAKAN (FULL VIDEOS WITH BASE CARD STYLE) -->
+      <article class="page" data-page="4">
+        <div class="container">
+          <div class="page-header" style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 20px;">
+            <div>
+              <span class="eyebrow">Koordinasi Teknik</span>
+              <h2 class="hero-title" style="font-size: clamp(2rem, 4vw, 3.5rem);">Koordinasi <span>Gerakan</span></h2>
+              <p style="color: var(--text-muted); max-width: 600px;">Setiap bagian di bawah menjelaskan fungsi gerakan dalam koordinasi utuh gaya dada.</p>
+            </div>
+            <button class="btn btn-secondary" onclick="goPage(2)">&larr; Kembali ke Menu</button>
+          </div>
+
+          <div class="coordination-grid">
+            <div class="coord-card">
+              <div class="coord-media">
+                <video controls playsinline preload="metadata">
+                  <source src="kaki1.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="coord-content">
+                <span class="coord-number">Gerakan 1</span>
+                <h3>Awalan Gerakan Kaki</h3>
+                <p>Tumit ditarik mendekati pinggul, lutut ditekuk, lalu telapak kaki diputar keluar. Gerakan ini menjadi persiapan sebelum kaki melakukan dorongan.</p>
+              </div>
+            </div>
+
+            <div class="coord-card">
+              <div class="coord-media">
+                <video controls playsinline preload="metadata">
+                  <source src="abim2.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="coord-content">
+                <span class="coord-number">Gerakan 2</span>
+                <h3>Dorongan Kaki</h3>
+                <p>Kedua kaki menendang ke arah luar dan belakang secara bersamaan, kemudian dirapatkan. Dorongan membantu tubuh meluncur dinamis di dalam air.</p>
+              </div>
+            </div>
+
+            <div class="coord-card">
+              <div class="coord-media">
+                <video controls playsinline preload="metadata">
+                  <source src="gerakan-tangan-abim.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="coord-content">
+                <span class="coord-number">Gerakan 3</span>
+                <h3>Gerakan Tangan</h3>
+                <p>Tangan membuka ke samping, menarik air ke arah dada, kemudian lurus kembali ke depan. Berfungsi membantu mengangkat kepala untuk mengambil napas.</p>
+              </div>
+            </div>
+
+            <div class="coord-card">
+              <div class="coord-media">
+                <video controls playsinline preload="metadata">
+                  <source src="abim3.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="coord-content">
+                <span class="coord-number">Gerakan 4</span>
+                <h3>Pernapasan &amp; Koordinasi</h3>
+                <p>Kepala naik saat tangan menarik air untuk bernapas. Setelah itu tangan lurus, kaki menendang, dan tubuh meluncur mulus dalam satu rangkaian utuh.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- PAGE 5: EVALUASI PEMAHAMAN -->
+      <article class="page" data-page="5">
+        <div class="container">
+          <div class="page-header" style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 20px;">
+            <div>
+              <span class="eyebrow">Analisis Evaluasi</span>
+              <h2 class="hero-title" style="font-size: clamp(2rem, 4vw, 3.5rem);">Lembar <span>Evaluasi</span></h2>
+              <p style="color: var(--text-muted);">Isi tanggapan Anda di bawah ini secara lengkap. Progres Anda akan langsung dihitung.</p>
+            </div>
+            <button class="btn btn-secondary" onclick="goPage(2)">&larr; Kembali ke Menu</button>
+          </div>
+
+          <div class="eval-container">
+            <!-- Left Side: Interactive Stat Panel (Reference Inspired) -->
+            <div class="stats-panel">
+              <h3>Progress Jawaban</h3>
+              <div class="progress-bar">
+                <div class="progress-fill" id="evalFill"></div>
+              </div>
+              <div class="stats-percentage" id="evalPercent">0% selesai</div>
+              <p style="font-size: 13px; color: #64748B; margin-top: 8px; line-height: 1.5;">Progres Anda disimpan sementara secara lokal di peramban ini.</p>
+            </div>
+
+            <!-- Right Side: Questions list -->
+            <div class="eval-questions-list">
+              <div class="eval-question-item">
+                <h4 style="margin-bottom: 12px; color: var(--lime-neon);">Soal 1</h4>
+                <p style="font-size: 15px; margin-bottom: 16px; font-weight: 700;">1. Setelah mempelajari materi pada website interaktif, rancanglah urutan gerakan renang gaya dada yang paling efektif mulai dari posisi tubuh, gerakan kaki, gerakan tangan, hingga pernapasan. Jelaskan alasan penyusunan urutan tersebut!</p>
+                <textarea class="essay" placeholder="Ketik jawaban analisis Anda di sini..."></textarea>
+              </div>
+
+              <div class="eval-question-item">
+                <h4 style="margin-bottom: 12px; color: var(--lime-neon);">Soal 2</h4>
+                <p style="font-size: 15px; margin-bottom: 16px; font-weight: 700;">2. Berdasarkan materi pada website, buatlah solusi latihan mandiri untuk peserta didik yang mengalami kesalahan pada gerakan kaki renang gaya dada agar gerakannya menjadi lebih benar and efisien.</p>
+                <textarea class="essay" placeholder="Ketik jawaban analisis Anda di sini..."></textarea>
+              </div>
+
+              <div class="eval-question-item">
+                <h4 style="margin-bottom: 12px; color: var(--lime-neon);">Soal 3</h4>
+                <p style="font-size: 15px; margin-bottom: 16px; font-weight: 700;">3. Setelah memahami teknik dasar renang gaya dada melalui website, susunlah program latihan sederhana selama satu minggu untuk meningkatkan kemampuan koordinasi gerakan tangan, kaki, dan pernapasan.</p>
+                <textarea class="essay" placeholder="Ketik jawaban analisis Anda di sini..."></textarea>
+              </div>
+
+              <div class="eval-question-item">
+                <h4 style="margin-bottom: 12px; color: var(--lime-neon);">Soal 4</h4>
+                <p style="font-size: 15px; margin-bottom: 16px; font-weight: 700;">4. Dalam renang gaya dada sering terjadi kesalahan koordinasi gerakan. Berdasarkan materi yang telah dipelajari, ciptakan strategi perbaikan teknik bagi perenang pemula yang mengalami kesalahan saat menggabungkan gerakan tangan, kaki, dan napas.</p>
+                <textarea class="essay" placeholder="Ketik jawaban analisis Anda di sini..."></textarea>
+              </div>
+
+              <div class="eval-question-item">
+                <h4 style="margin-bottom: 12px; color: var(--lime-neon);">Soal 5</h4>
+                <p style="font-size: 15px; margin-bottom: 16px; font-weight: 700;">5. Setelah mempelajari teknik pernapasan pada website, buatlah langkah-langkah latihan baru yang dapat membantu peserta didik melatih pengambilan dan pengeluaran napas secara benar saat melakukan renang gaya dada.</p>
+                <textarea class="essay" placeholder="Ketik jawaban analisis Anda di sini..."></textarea>
+              </div>
+
+              <div class="eval-question-item">
+                <h4 style="margin-bottom: 12px; color: var(--lime-neon);">Soal 6</h4>
+                <p style="font-size: 15px; margin-bottom: 16px; font-weight: 700;">6. Berdasarkan materi teknik dasar renang gaya dada pada website, rancanglah variasi latihan pemanasan dan pendinginan yang sesuai untuk dilakukan sebelum dan sesudah latihan renang.</p>
+                <textarea class="essay" placeholder="Ketik jawaban analisis Anda di sini..."></textarea>
+              </div>
+
+              <div class="eval-question-item">
+                <h4 style="margin-bottom: 12px; color: var(--lime-neon);">Soal 7</h4>
+                <p style="font-size: 15px; margin-bottom: 16px; font-weight: 700;">7. Setelah memahami materi posisi badan renang gaya dada, susunlah cara latihan yang dapat membantu mempertahankan posisi tubuh tetap streamline (lurus dan seimbang) selama berenang.</p>
+                <textarea class="essay" placeholder="Ketik jawaban analisis Anda di sini..."></textarea>
+              </div>
+
+              <div class="eval-question-item">
+                <h4 style="margin-bottom: 12px; color: var(--lime-neon);">Soal 8</h4>
+                <p style="font-size: 15px; margin-bottom: 16px; font-weight: 700;">8. Berdasarkan pembelajaran pada website, buatlah rancangan pembelajaran praktik singkat yang bertujuan meningkatkan kemampuan gerakan kaki renang gaya dada pada siswa SMA.</p>
+                <textarea class="essay" placeholder="Ketik jawaban analisis Anda di sini..."></textarea>
+              </div>
+
+              <div class="eval-question-item">
+                <h4 style="margin-bottom: 12px; color: var(--lime-neon);">Soal 9</h4>
+                <p style="font-size: 15px; margin-bottom: 16px; font-weight: 700;">9. Setelah mempelajari berbagai teknik dasar renang gaya dada pada website, kembangkan solusi latihan untuk peserta didik yang merasa cepat lelah saat berenang agar gerakannya menjadi lebih efektif dan hemat energi.</p>
+                <textarea class="essay" placeholder="Ketik jawaban analisis Anda di sini..."></textarea>
+              </div>
+
+              <div class="eval-question-item">
+                <h4 style="margin-bottom: 12px; color: var(--lime-neon);">Soal 10</h4>
+                <p style="font-size: 15px; margin-bottom: 16px; font-weight: 700;">10. Berdasarkan seluruh materi yang dipelajari melalui website interaktif, ciptakan kombinasi latihan teknik dasar renang gaya dada yang menurut Anda paling tepat untuk meningkatkan kemampuan renang pemula. Jelaskan alasan pemilihan latihan tersebut.</p>
+                <textarea class="essay" placeholder="Ketik jawaban analisis Anda di sini..."></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- PAGE 6: QUIZ TIME -->
+      <article class="page" data-page="6">
+        <div class="container">
+          <div class="page-header" style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 20px;">
+            <div>
+              <span class="eyebrow">Evaluasi Kognitif</span>
+              <h2 class="hero-title" style="font-size: clamp(2rem, 4vw, 3.5rem);">Kuis <span>Interaktif</span></h2>
+              <p style="color: var(--text-muted);">Pilih salah satu opsi jawaban yang paling tepat. Skor dihitung secara real-time.</p>
+            </div>
+            <button class="btn btn-secondary" onclick="goPage(2)">&larr; Kembali ke Menu</button>
+          </div>
+
+          <!-- Quiz Cards Wrapper -->
+          <div class="quiz-layout" id="quizWrap"></div>
+
+          <!-- Control bar for quiz -->
+          <div class="quiz-action-bar">
+            <button class="btn btn-primary" onclick="showScore()">Lihat Skor</button>
+            <button class="btn btn-secondary" onclick="resetQuiz()">Ulangi Kuis</button>
+            <div class="chip-score" id="scoreText">Skor: 0 / 10</div>
+          </div>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- Bottombar Navigation -->
+    <footer class="bottombar">
+      <div class="dots-nav" id="dots"></div>
+      <div class="footer-buttons">
+        <button class="btn btn-secondary" onclick="prevPage()">KEMBALI</button>
+        <button class="btn btn-primary" onclick="nextPage()">LANJUT</button>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    let currentPage = 1;
+    const totalPages = 6;
+    const pages = document.querySelectorAll('.page');
+    const dots = document.getElementById('dots');
+
+    function renderDots(){
+      dots.innerHTML = '';
+      for(let i=1; i<=totalPages; i++){
+        const d = document.createElement('span');
+        d.className = 'dot' + (i===currentPage ? ' active' : '');
+        d.onclick = () => goPage(i);
+        dots.appendChild(d);
+      }
+      
+      // Update top header nav active state
+      const navPills = document.querySelectorAll('.nav-pill');
+      navPills.forEach((pill, idx) => {
+        pill.classList.toggle('active', (idx + 1) === currentPage);
+      });
+    }
+
+    function pauseAllVideos(){
+      document.querySelectorAll('video').forEach(v => { try { v.pause(); } catch(e){} });
+      clearInterval(stopTimer);
+    }
+
+    function goPage(n){
+      if(n < 1 || n > totalPages) return;
+      pauseAllVideos();
+      currentPage = n;
+      pages.forEach(p => p.classList.toggle('active', Number(p.dataset.page) === n));
+      renderDots();
+      
+      // Scroll to top of the page smoothly when switching pages
+      const activePage = document.querySelector('.page.active');
+      if (activePage) {
+        activePage.scrollTop = 0;
+      }
+    }
+
+    function nextPage(){ goPage(Math.min(totalPages, currentPage + 1)); }
+    function prevPage(){ goPage(Math.max(1, currentPage - 1)); }
+    renderDots();
+
+    // STOP MOTION INTEGRATION AND HANDLERS
+    const stopMain = document.getElementById('stopMain');
+    const motionPopup = document.getElementById('motionPopup');
+    const popupTitle = document.getElementById('popupTitle');
+    const popupText = document.getElementById('popupText');
+
+    let stopTimer = null;
+    let popupTimer = null;
+    let lastPopupSecond = -1;
+    let activeStopSrc = 'kaki1.mp4';
+
+    const popupMateri = {
+      'kaki1.mp4': [
+        {
+          time: 0,
+          title: 'Awalan Gerakan Kaki',
+          text: 'Tumit ditarik mendekati pinggul, lutut ditekuk, dan telapak kaki mulai diputar keluar.',
+          audio: 'AUDIO GERAKAN 1.1.mp3'
+        },
+        {
+          time: 5,
+          title: 'Posisi Telapak Kaki',
+          text: 'Telapak kaki menghadap keluar agar dorongan air menjadi lebih kuat dan terarah.',
+          audio: 'AUDIO GERAKAN 1.2.mp3'
+        },
+        {
+          time: 10,
+          title: 'Persiapan Tendangan',
+          text: 'Kedua kaki harus seimbang supaya gerakan tidak miring dan tubuh tetap stabil.',
+          audio: 'AUDIO GERAKAN 1.3.mp3'
+        },
+        {
+          time: 15,
+          title: 'Gerakan Terkontrol',
+          text: 'Jangan membuka lutut terlalu lebar. Fokus pada putaran telapak kaki dan posisi pinggul.',
+          audio: 'AUDIO GERAKAN 1.4.mp3'
+        }
+      ],
+      'abim2.mp4': [
+        {
+          time: 0,
+          title: 'Dorongan Kaki',
+          text: 'Kaki menendang ke arah luar dan belakang secara bersamaan untuk mendorong tubuh maju.',
+          audio: 'AUDIO GERAKAN 2.1.mp3'
+        },
+        {
+          time: 5,
+          title: 'Rapatkan Kaki',
+          text: 'Setelah menendang, kedua kaki dirapatkan kembali agar posisi tubuh menjadi streamline.',
+          audio: 'AUDIO GERAKAN 2.2.mp3'
+        },
+        {
+          time: 10,
+          title: 'Arah Tendangan',
+          text: 'Tendangan tidak hanya ke samping, tetapi juga mendorong air ke belakang.',
+          audio: 'AUDIO GERAKAN 2.3.mp3'
+        },
+        {
+          time: 15,
+          title: 'Meluncur',
+          text: 'Setelah kaki rapat, biarkan tubuh meluncur sejenak sebelum mengulang gerakan.',
+          audio: 'AUDIO GERAKAN 2.4.mp3'
+        }
+      ],
+      'gerakan-tangan-abim.mp4': [
+        {
+          time: 0,
+          title: 'Awal Koordinasi',
+          text: 'Gerakan dimulai dari posisi tubuh lurus, tangan ke depan, dan kaki siap melakukan dorongan.',
+          audio: 'AUDIO GERAKAN 3.1.mp3'
+        },
+        {
+          time: 5,
+          title: 'Ambil Napas',
+          text: 'Kepala naik saat tangan menarik air. Ambil napas cepat melalui mulut.',
+          audio: 'AUDIO GERAKAN 3.2.mp3'
+        },
+        {
+          time: 10,
+          title: 'Tendang dan Luruskan',
+          text: 'Saat tangan kembali lurus, kaki menendang dan tubuh mulai meluncur.',
+          audio: 'AUDIO GERAKAN 3.3.mp3'
+        },
+        {
+          time: 15,
+          title: 'Koordinasi Utuh',
+          text: 'Urutan yang benar: tarik tangan, ambil napas, tendang kaki, lalu meluncur.',
+          audio: 'AUDIO GERAKAN 3.4.mp3'
+        }
+      ],
+      'abim3.mp4': [
+        {
+          time: 0,
+          title: 'Awal Koordinasi',
+          text: 'Gerakan dimulai dari posisi tubuh lurus, tangan ke depan, dan kaki siap melakukan dorongan.',
+          audio: 'AUDIO GERAKAN 4.1.mp3'
+        },
+        {
+          time: 5,
+          title: 'Ambil Napas',
+          text: 'Kepala naik saat tangan menarik air. Ambil napas cepat melalui mulut.',
+          audio: 'AUDIO GERAKAN 4.2.mp3'
+        },
+        {
+          time: 10,
+          title: 'Tendang dan Luruskan',
+          text: 'Saat tangan kembali lurus, kaki menendang dan tubuh mulai meluncur.',
+          audio: 'AUDIO GERAKAN 4.3.mp3'
+        },
+        {
+          time: 15,
+          title: 'Koordinasi Utuh',
+          text: 'Urutan yang benar: tarik tangan, ambil napas, tendang kaki, lalu meluncur.',
+          audio: 'AUDIO GERAKAN 4.4.mp3'
+        }
+      ]
+    };
+
+    function showMotionPopup(item){
+      if(!motionPopup || !item) return;
+
+      popupTitle.textContent = item.title;
+      popupText.textContent = item.text;
+
+      let sound = document.getElementById('popupSound');
+      if(!sound){
+        sound = document.createElement('audio');
+        sound.id = 'popupSound';
+        document.body.appendChild(sound);
+      }
+
+      sound.pause();
+      sound.currentTime = 0;
+
+      if(item.audio){
+        sound.src = item.audio;
+        setTimeout(() => {
+          sound.play().catch(() => {});
+        }, 100);
+      }
+
+      motionPopup.classList.add('show');
+      clearTimeout(popupTimer);
+
+      popupTimer = setTimeout(() => {
+        motionPopup.classList.remove('show');
+      }, 4200);
+    }
+
+    function checkFiveSecondPopup(){
+      const materi = popupMateri[activeStopSrc] || [];
+      const current = Math.floor(stopMain.currentTime);
+      const nearestFive = Math.floor(current / 5) * 5;
+
+      if(current >= 0 && nearestFive !== lastPopupSecond && current % 5 <= 1){
+        const item = materi.find(m => m.time === nearestFive);
+        if(item){
+          lastPopupSecond = nearestFive;
+          showMotionPopup(item);
+        }
+      }
+    }
+
+    function selectStepAndPlay(stepIdx, src, title, desc){
+      // Toggle active classes on steps items
+      for(let i = 1; i <= 4; i++){
+        document.getElementById('stepBtn' + i).classList.toggle('active', i === stepIdx);
+      }
+
+      clearInterval(stopTimer);
+      clearTimeout(popupTimer);
+      if(motionPopup) motionPopup.classList.remove('show');
+      activeStopSrc = src;
+      lastPopupSecond = -1;
+      
+      stopMain.innerHTML = '<source src="' + src + '" type="video/mp4">';
+      stopMain.load();
+      
+      document.getElementById('stopTitle').textContent = title;
+      document.getElementById('stopDesc').textContent = desc;
+      
+      const firstPopup = (popupMateri[src] || [])[0];
+      setTimeout(() => {
+        showMotionPopup(firstPopup);
+      }, 400);
+    }
+
+    function toggleStop(){
+      stopMain.addEventListener('timeupdate', checkFiveSecondPopup);
+      if(stopMain.paused){
+        stopMain.play();
+        showMotionPopup((popupMateri[activeStopSrc] || [])[0]);
+      } else {
+        stopMain.pause();
+      }
+    }
+
+    function resetStop(){
+      clearInterval(stopTimer);
+      clearTimeout(popupTimer);
+      lastPopupSecond = -1;
+      stopMain.currentTime = 0;
+      if(motionPopup) motionPopup.classList.remove('show');
+    }
+
+    // Set initial active states for first load
+    document.getElementById('stepBtn1').classList.add('active');
+
+    // EVALUASI PROGRESS HANDLERS
+    const essays = document.querySelectorAll('.essay');
+    const evalFill = document.getElementById('evalFill');
+    const evalPercent = document.getElementById('evalPercent');
+
+    function updateEval(){
+      let filled = 0;
+      essays.forEach(e => { if(e.value.trim()) filled++; });
+      const pct = Math.round((filled / essays.length) * 100);
+      evalFill.style.width = pct + '%';
+      evalPercent.textContent = pct + '% selesai';
+    }
+
+    essays.forEach(e => e.addEventListener('input', updateEval));
+    updateEval();
+
+    // INTERACTIVE QUIZ DATA & LOGIC
+    const quizData = [
+      {
+        q: 'Setelah mempelajari materi melalui website, peserta didik diminta menyusun program latihan mandiri gaya dada. Rancangan terbaik adalah…',
+        a: [
+          'Latihan terstruktur meliputi pemanasan, inti teknik, dan pendinginan',
+          'Latihan bebas tanpa tujuan',
+          'Latihan hanya fokus kecepatan',
+          'Latihan tanpa urutan'
+        ],
+        c: 0
+      },
+      {
+        q: 'Setelah memahami teknik gerakan kaki, peserta didik diminta membuat video tutorial. Produk terbaik adalah…',
+        a: [
+          'Video hiburan di kolam',
+          'Video tanpa praktik',
+          'Video dengan urutan gerakan kaki yang jelas dan sistematis',
+          'Video tanpa penjelasan'
+        ],
+        c: 2
+      },
+      {
+        q: 'Setelah mempelajari koordinasi gerakan, peserta didik diminta membuat simulasi sederhana. Hasil terbaik adalah…',
+        a: [
+          'Teks panjang tanpa visual',
+          'Gambar acak',
+          'Foto atlet',
+          'Animasi yang menunjukkan sinkronisasi tangan, kaki, dan pernapasan'
+        ],
+        c: 3
+      },
+      {
+        q: 'Setelah memahami teknik pernapasan, peserta didik diminta membuat panduan. Bentuk terbaik adalah…',
+        a: [
+          'Hanya definisi',
+          'Gambar tanpa keterangan',
+          'Penjelasan singkat tanpa contoh',
+          'Panduan langkah-langkah kapan menarik dan menghembuskan napas'
+        ],
+        c: 3
+      },
+      {
+        q: 'Setelah mempelajari kesalahan umum gaya dada, peserta didik diminta membuat media edukasi. Produk terbaik adalah…',
+        a: [
+          'Tulisan panjang tanpa ilustrasi',
+          'Poster gambar saja',
+          'Perbandingan visual teknik benar dan salah',
+          'Video hiburan'
+        ],
+        c: 2
+      },
+      {
+        q: 'Setelah menggunakan website pembelajaran, peserta didik diminta membuat kuis evaluasi. Kuis yang paling efektif adalah…',
+        a: [
+          'Soal hafalan',
+          'Soal acak tanpa tujuan',
+          'Soal yang menuntut analisis teknik dan perbaikan gerakan',
+          'Pertanyaan tanpa jawaban'
+        ],
+        c: 2
+      },
+      {
+        q: 'Setelah memahami teknik meluncur, peserta didik diminta merancang latihan. Rancangan terbaik adalah…',
+        a: [
+          'Latihan dengan langkah jelas dan indikator keberhasilan',
+          'Latihan bebas',
+          'Latihan tanpa instruksi',
+          'Latihan tanpa evaluasi'
+        ],
+        c: 0
+      },
+      {
+        q: 'Setelah belajar melalui website, peserta didik diminta membuat refleksi pembelajaran. Bentuk terbaik adalah…',
+        a: [
+          'Menyalin materi',
+          'Menulis ulang definisi',
+          'Cerita bebas tanpa arah',
+          'Refleksi berisi kelebihan, kekurangan, dan rencana perbaikan teknik'
+        ],
+        c: 3
+      },
+      {
+        q: 'Setelah memahami seluruh materi, peserta didik diminta mengembangkan fitur baru pada website. Ide terbaik adalah…',
+        a: [
+          'Menambahkan gambar saja',
+          'Fitur latihan interaktif dengan umpan balik otomatis',
+          'Menghapus materi lama',
+          'Menambahkan teks panjang'
+        ],
+        c: 1
+      },
+      {
+        q: 'Setelah menyelesaikan pembelajaran, peserta didik diminta membuat program latihan kelompok. Rancangan terbaik adalah…',
+        a: [
+          'Latihan bebas',
+          'Latihan tanpa tujuan',
+          'Latihan terstruktur dengan pembagian peran dan evaluasi bersama',
+          'Latihan tanpa pembagian tugas'
+        ],
+        c: 2
+      }
+    ];
+
+    const answers = {};
+    const quizWrap = document.getElementById('quizWrap'); 
+
+    function renderQuiz(){
+      quizWrap.innerHTML = '';
+      quizData.forEach((item, idx) => {
+        const card = document.createElement('div');
+        card.className = 'quiz-card';
+        
+        const qTitle = document.createElement('h3');
+        qTitle.textContent = (idx + 1) + '. ' + item.q;
+        card.appendChild(qTitle);
+
+        const grid = document.createElement('div');
+        grid.className = 'options-grid';
+
+        item.a.forEach((text, optIdx) => {
+          const btn = document.createElement('button');
+          btn.className = 'quiz-option';
+          btn.textContent = text;
+          btn.onclick = () => chooseAnswer(idx, optIdx, btn);
+          grid.appendChild(btn);
+        });
+
+        card.appendChild(grid);
+        quizWrap.appendChild(card);
+      });
+    }
+
+    function chooseAnswer(qIdx, optIdx, btn){
+      answers[qIdx] = optIdx;
+      const options = btn.parentElement.querySelectorAll('.quiz-option');
+      options.forEach(o => o.classList.remove('correct','wrong'));
+      
+      if(optIdx === quizData[qIdx].c){
+        btn.classList.add('correct');
+      } else {
+        btn.classList.add('wrong');
+        // Show correct indicator too
+        options[quizData[qIdx].c].classList.add('correct');
+      }
+      showScore(false);
+    }
+
+    function showScore(alertIt = true){
+      let score = 0;
+      quizData.forEach((q,i) => { if(answers[i] === q.c) score++; });
+      document.getElementById('scoreText').textContent = 'Skor: ' + score + ' / ' + quizData.length;
+      if(alertIt) {
+        // Styled Custom UI popup replacement for standard browser alert
+        const overlay = document.createElement('div');
+        overlay.style.position = 'fixed';
+        overlay.style.inset = '0';
+        overlay.style.backgroundColor = 'rgba(0,0,0,0.7)';
+        overlay.style.zIndex = '9999';
+        overlay.style.display = 'grid';
+        overlay.style.placeItems = 'center';
+
+        const dialog = document.createElement('div');
+        dialog.className = 'glass-card';
+        dialog.style.textAlign = 'center';
+        dialog.style.maxWidth = '400px';
+        dialog.style.padding = '40px';
+        dialog.style.border = '2px solid var(--lime-neon)';
+        dialog.style.background = 'var(--bg-dark-blue)';
+
+        dialog.innerHTML = `
+          <h2 style="font-family:'Poppins',sans-serif; font-size: 32px; font-weight:900; color:var(--lime-neon); margin-bottom:16px;">HASIL KUIS</h2>
+          <p style="font-size: 16px; margin-bottom: 24px;">Skor Anda berhasil dikalkulasi!</p>
+          <div style="font-size: 64px; font-weight: 900; color: var(--white-pure); margin-bottom: 30px;">${score} <span style="font-size:24px; color:var(--text-muted);">/ ${quizData.length}</span></div>
+          <button class="btn btn-primary" id="closeScoreBtn">Tutup</button>
+        `;
+
+        overlay.appendChild(dialog);
+        document.body.appendChild(overlay);
+
+        document.getElementById('closeScoreBtn').onclick = () => {
+          overlay.remove();
+        };
+      }
+    }
+
+    function resetQuiz(){
+      Object.keys(answers).forEach(k => delete answers[k]);
+      renderQuiz();
+      showScore(false);
+    }
+
+    // Initial render
+    renderQuiz();
+
+  </script>
+</body>
+</html>
